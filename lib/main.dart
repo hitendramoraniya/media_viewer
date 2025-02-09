@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:media_viewer/js_interop_service.dart';
 import 'dart:ui_web';
 import 'dart:html' as html;
+import 'package:js/js.dart';
 
 /// Entrypoint of the application.
 void main() {
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-var service = JsInteropService();
+// var service = JsInteropService();
 
 /// [Widget] displaying the home page consisting of an image the the buttons.
 class HomePage extends StatefulWidget {
@@ -29,6 +29,7 @@ class HomePage extends StatefulWidget {
 }
 
 /// State of a [HomePage].
+///
 class _HomePageState extends State<HomePage> {
   TextEditingController imageTextController = TextEditingController();
   String imageUrl = "";
@@ -101,7 +102,7 @@ class _HomePageState extends State<HomePage> {
       img.style.height = '100%';
       img.style.objectFit = 'cover';
       img.onDoubleClick.listen((event) {
-        service.toggleFullScreen();
+        _toggleFullScreen();
       });
       return img;
     });
@@ -141,11 +142,11 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         popupMenuItem("Enter FullScreen", () {
                           closeMenu();
-                          service.enterFullScreen();
+                          _enterFullScreen();
                         }),
                         popupMenuItem("Exit FullScreen", () {
                           closeMenu();
-                          service.exitFullScreen();
+                          _exitFullScreen();
                         })
                       ],
                     ),
@@ -182,3 +183,12 @@ class _HomePageState extends State<HomePage> {
     });
   }
 }
+
+@JS()
+external _toggleFullScreen();
+
+@JS()
+external _enterFullScreen();
+
+@JS()
+external _exitFullScreen();
